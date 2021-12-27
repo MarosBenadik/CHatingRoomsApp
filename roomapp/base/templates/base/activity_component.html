@@ -1,0 +1,14 @@
+<h3>Recent Activity</h3>
+<hr>
+{% for feed in feeds %}
+<div>
+    <small><a href="{% url 'user-profile' feed.user.id %}">@{{feed.user}}</a>{{feed.created|timesince}} ago </small>
+    <small>replied to "{{feed.room}}"</small>
+
+    <p>{{feed}}</p>
+    {% if request.user == message.user %}
+    <a href="{% url 'delete-feed' feed.id %}">Delete</a>
+    {% endif %}
+    <hr>
+</div>
+{% endfor %}

@@ -1,0 +1,56 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<style>
+    .home-container{
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr;
+    }
+    .Header{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+
+</style>
+
+<div class="home-container">
+
+    <div class="screen">
+        <h3>List of Friends</h3>
+    </div>
+    <div class="screen">
+        <div class="Header">
+
+            <div class="layout__boxHeader">
+                <div class="layout__boxTitle">
+                    <a href="{% url 'home' %}">Home</a>
+                </div>
+            </div>
+            <h3>Update your Profile</h3>
+            <div class="update">
+
+            </div>
+        </div>
+        <div class="body">
+            <form class="form" action="" method="POST">
+                {% csrf_token %}
+
+                {% for field in form %}
+                <div class="form__grope">
+                    <label for="field">{{field.label}}</label>
+                    {{field}}
+                </div>
+                {% endfor %}
+                <div class="confirm">
+                    <button class="form__action" type="submit">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="screen">
+        <h3>List of followers</h3>
+    </div>
+</div>
+
+
+{% endblock content %}

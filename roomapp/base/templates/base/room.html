@@ -1,0 +1,79 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<style>
+    .room-container{
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+    }
+    .room{
+        display: grid;
+        grid-template-columns: 3fr 1fr,
+    }
+
+</style>
+<div class="room-container">
+    <div class="room">
+        <h1>{{room.name}}</h1>
+        <div class="room__hosted">
+            <p>Hosted By</p>
+            <a href="{% url 'user-profile' room.host.id %}" class="room">
+                <div class="avatar avatar--small">
+                    <img src="https://randomuser.me/api/portraits/women/11.jpg" />
+                </div>
+            </a>
+            <span>@{{room.host.username}}</span>
+        </div>
+        <span class="room_topics">{{room.topic}}</span>
+        {% if room.host == request.user %}
+        <div>
+            <div>
+                {% if request.user == room.host %}
+                <a href="{% url 'update-room' room.id %}">Edit</a>
+                <a href="{% url 'delete-room' room.id %}">Delete</a>
+                {% endif %}
+            </div>
+        </div>
+
+        {% endif %}
+        <p>{{room.description}}</p><span>{{room.created|timesince}} ago</span>
+
+        <div class="comment-wrapper">
+            <h3>Conversation</h3>
+            <hr>
+
+            {% for message in room_messages %}
+            <div>
+                {% if request.user == message.user %}
+                <a href="{% url 'delete-message' message.id %}">Delete</a>
+                {% endif %}
+                <smal>
+                    <a href="{% url 'user-profile' message.user.id %}" class="comment-wrapper">@{{message.user}}</a>{{message.created|timesince}} ago </smal>
+                <p>{{message.body}}</p>
+                <hr>
+            </div>
+            {% endfor %}
+        </div>
+        {% if request.user.is_authenticated %}
+        <div class="comment-form">
+            <form method="POST" action="">
+                {% csrf_token %}
+                <input type="text" name="body" placeholder="Write your message here..."/>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="participants">
+        <h3 class="participants__top">Participants <span>{{participants.count}}</span></h3>
+        {% for user in participants %}
+            <div>
+                <a href="{% url 'user-profile' user.id %}" class="particiipant">@{{user.username}}</a>
+                <p>
+
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
