@@ -11,6 +11,9 @@ from .forms import RoomForm, UserForm
 
 # Create your views here.
 
+def about_us_page(request):
+    return render(request, "base/about_us_page.html")
+
 def loginPage(request):
     page = 'login'
     if request.user.is_authenticated:
